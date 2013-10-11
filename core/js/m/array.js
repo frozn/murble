@@ -1,5 +1,13 @@
 /**
  * array functions
+ *
+ * usage:
+ * - each
+ * var cities = ['Berlin', 'London', 'Paris'];
+ *
+ * m.array.each(cities, function(city, index) {
+ *     alert('city: ' + city + ', index: ' + index);
+ * });
  */
 m.createNamespace('m.array')
 

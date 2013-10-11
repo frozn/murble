@@ -1,5 +1,17 @@
 /**
  * object functions
+ *
+ * usage:
+ * - each
+ * var cities = {
+ *     de: 'Berlin',
+ *     en: 'London',
+ *     fr: 'Paris'
+ * };
+ *
+ * m.object.each(cities, function(country, city) {
+ *     alert('country: ' + country + ', city: ' + city);
+ * });
  */
 m.createNamespace('m.object');
 
