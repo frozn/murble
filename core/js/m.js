@@ -19,6 +19,4 @@ m.createNamespace = function(namespace) {
 
         root = root[part];
     }
-
-    return root;
-}
+};
