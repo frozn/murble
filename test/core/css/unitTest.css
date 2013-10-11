@@ -1,0 +1,12 @@
+body {
+    font-family: monospace;
+    white-space: pre;
+}
+
+.ok {
+    color: #00CC00;
+}
+
+.error {
+    color: #CC0000;
+}

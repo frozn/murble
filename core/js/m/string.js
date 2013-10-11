@@ -8,6 +8,9 @@
  *     fn: 'getData',
  *     errorCode: 110
  * });
+ *
+ * - toCharCodeArray
+ * var charCodeArr = m.string.toCharCodeArray('hello world');
  */
 m.createNamespace('m.string');
 
@@ -18,5 +21,15 @@ m.string = {
 		});
 		
 		return str;
-	}
+	},
+    toCharCodeArray: function(str) {
+        var arr = [],
+            i;
+
+        for (i = 0; i < str.length; i++) {
+            arr.push(str.charCodeAt(i));
+        }
+
+        return a;
+    }
 };

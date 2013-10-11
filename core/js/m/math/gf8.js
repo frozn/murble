@@ -8,7 +8,7 @@
  * - divide
  * var result = m.math.gf8.divide(a, b);
  */
-m.createNamespace('mb.math.gf8');
+m.createNamespace('m.math.gf8');
 
 m.math.gf8 = (function() {
 	var gmul8 = function(a, b) {
