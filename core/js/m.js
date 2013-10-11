@@ -1,5 +1,10 @@
 /**
  * create namespace
+ *
+ * usage:
+ * m.createNamespace('m.math.gf8');
+ *
+ * m.math.gf8 = ...
  */
 var m = m || {};
 
