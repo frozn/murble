@@ -1,4 +1,4 @@
-murmur
+murble
 ======
 
-Secure Messaging
+secure messaging
