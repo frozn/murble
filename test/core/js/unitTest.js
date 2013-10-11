@@ -4,14 +4,17 @@ $(document).ready(function() {
     // all test cases from "ECBKeySbox256.rsp" used
     var testAes256Encrypt = function(testVectors) {
         m.array.each(testVectors, function(testVector) {
-            var aes256 = new m.cipher.aes256(m.util.hex.stringToByteArray(testVector.key)),
-                cipherText = aes256.encrypt(m.util.hex.stringToByteArray(testVector.plainText)),
+            var key = m.util.hex.stringToByteArray(testVector.key),
+                plainText = m.util.hex.stringToByteArray(testVector.plainText),
+                aes256 = new m.cipher.aes256(key),
+                cipherText = aes256.encrypt(plainText),
                 cipherTextSpecification = m.util.hex.stringToByteArray(testVector.cipherTextSpecification);
 
             $('body').append($('<div>', {
-                html: m.string.format('aes-256 encrypt test vectors: <span class="{result}">{result}</span>, input: [{plainText}], expected: [{cipherTextSpecification}], returned: [{cipherText}]', {
+                html: m.string.format('aes-256 encrypt test vectors: [<span class="{result}">{result}</span>], input: [key: {key}, plain text: {plainText}], expected: [{cipherTextSpecification}], returned: [{cipherText}]', {
                     result: m.array.equals(cipherText, cipherTextSpecification) ? 'ok' : 'error',
-                    plainText: testVector.plainText,
+                    key: m.util.hex.byteArrayToString(key),
+                    plainText: m.util.hex.byteArrayToString(plainText),
                     cipherTextSpecification: m.util.hex.byteArrayToString(cipherTextSpecification),
                     cipherText: m.util.hex.byteArrayToString(cipherText)
                 })
@@ -90,14 +93,17 @@ $(document).ready(function() {
     // all test cases from "ECBKeySbox256.rsp" used
     var testAes256Decrypt = function(testVectors) {
         m.array.each(testVectors, function(testVector) {
-            var aes256 = new m.cipher.aes256(m.util.hex.stringToByteArray(testVector.key)),
-                plainText = aes256.decrypt(m.util.hex.stringToByteArray(testVector.cipherText)),
+            var key = m.util.hex.stringToByteArray(testVector.key),
+                cipherText = m.util.hex.stringToByteArray(testVector.cipherText),
+                aes256 = new m.cipher.aes256(key),
+                plainText = aes256.decrypt(cipherText),
                 plainTextSpecification = m.util.hex.stringToByteArray(testVector.plainTextSpecification);
 
             $('body').append($('<div>', {
-                html: m.string.format('aes-256 decrypt test vectors: <span class="{result}">{result}</span>, input: [{cipherText}], expected: [{plainTextSpecification}], returned: [{plainText}]', {
+                html: m.string.format('aes-256 decrypt test vectors: [<span class="{result}">{result}</span>], input: [key: {key}, cipher text: {cipherText}], expected: [{plainTextSpecification}], returned: [{plainText}]', {
                     result: m.array.equals(plainText, plainTextSpecification) ? 'ok' : 'error',
-                    cipherText: testVector.cipherText,
+                    key: m.util.hex.byteArrayToString(key),
+                    cipherText: m.util.hex.byteArrayToString(cipherText),
                     plainTextSpecification: m.util.hex.byteArrayToString(plainTextSpecification),
                     plainText: m.util.hex.byteArrayToString(plainText)
                 })
