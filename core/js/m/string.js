@@ -15,14 +15,14 @@
 m.createNamespace('m.string');
 
 m.string = {
-	format: function(str, replacements) {
-		m.object.each(replacements, function(key, replacement) {
-			str = str.replace(new RegExp('\\{' + key + '\\}', 'g'), replacement);
-		});
-		
-		return str;
-	},
-    toCharCodeArray: function(str) {
+    format: function (str, replacements) {
+        m.object.each(replacements, function (key, replacement) {
+            str = str.replace(new RegExp('\\{' + key + '\\}', 'g'), replacement);
+        });
+
+        return str;
+    },
+    toCharCodeArray: function (str) {
         var arr = [],
             i;
 

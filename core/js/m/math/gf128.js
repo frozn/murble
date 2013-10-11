@@ -15,7 +15,7 @@
 m.createNamespace('m.math.gf128');
 
 m.math.gf128 = {
-    multiply: function(a, b) { // 128bit = arrays with 16 bytes, standard multiplication without fixed factor.
+    multiply: function (a, b) { // 128bit = arrays with 16 bytes, standard multiplication without fixed factor.
         var z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             v = b.slice(),
             i, j;
@@ -40,10 +40,10 @@ m.math.gf128 = {
 
         return z;
     },
-    createFixedFactorMultiplication: function(fixedFactor) { // 128bit = array with 16 bytes
+    createFixedFactorMultiplication: function (fixedFactor) { // 128bit = array with 16 bytes
         var m;
 
-        this.multiply = function(a) { // 128bit = array with 16 bytes
+        this.multiply = function (a) { // 128bit = array with 16 bytes
             var z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 i, j;
 
@@ -56,7 +56,7 @@ m.math.gf128 = {
             return z;
         };
 
-        this.setFixedFactor = function(fixedFactor) { // 128bit = array with 16 bytes
+        this.setFixedFactor = function (fixedFactor) { // 128bit = array with 16 bytes
             // init m table
             var i, j;
 

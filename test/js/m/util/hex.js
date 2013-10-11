@@ -10,19 +10,19 @@
  * var str = '010203040580',
  *     byteArr = m.util.hex.stringToByteArray(str);
  */
-m.createNamespace('m.util.hex')
+m.createNamespace('m.util.hex');
 
 m.util.hex = {
-    byteArrayToString: function(arr) {
+    byteArrayToString: function (arr) {
         var str = '';
 
-        m.array.each(arr, function(byte) {
+        m.array.each(arr, function (byte) {
             str += ('0' + byte.toString(16)).slice(-2);
         });
 
         return str;
     },
-    stringToByteArray: function(str) {
+    stringToByteArray: function (str) {
         var arr = [],
             i;
 

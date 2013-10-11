@@ -10,7 +10,7 @@ var m = m || {};
 
 m.global = this;
 
-m.createNamespace = function(namespace) {
+m.createNamespace = function (namespace) {
     var root = m.global,
         parts = namespace.split('.'),
         i;
