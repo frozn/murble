@@ -11,6 +11,7 @@ $(document).ready(function () {
                 cipherTextSpecification = m.util.hex.stringToByteArray(testVector.cipherTextSpecification);
 
             $('body').append($('<div>', {
+                class: 'pre',
                 html: m.string.format('aes-256 encrypt test vectors: [<span class="{result}">{result}</span>], input: [key: {key}, plain text: {plainText}], expected: [{cipherTextSpecification}], returned: [{cipherText}]', {
                     result: m.array.equals(cipherText, cipherTextSpecification) ? 'ok' : 'error',
                     key: m.util.hex.byteArrayToString(key),
@@ -100,6 +101,7 @@ $(document).ready(function () {
                 plainTextSpecification = m.util.hex.stringToByteArray(testVector.plainTextSpecification);
 
             $('body').append($('<div>', {
+                class: 'pre',
                 html: m.string.format('aes-256 decrypt test vectors: [<span class="{result}">{result}</span>], input: [key: {key}, cipher text: {cipherText}], expected: [{plainTextSpecification}], returned: [{plainText}]', {
                     result: m.array.equals(plainText, plainTextSpecification) ? 'ok' : 'error',
                     key: m.util.hex.byteArrayToString(key),
