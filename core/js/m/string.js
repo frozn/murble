@@ -30,6 +30,6 @@ m.string = {
             arr.push(str.charCodeAt(i));
         }
 
-        return a;
+        return arr;
     }
 };
