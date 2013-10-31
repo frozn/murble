@@ -78,7 +78,7 @@ m.cipher.mode.gcm = function (key, newIv) { // key = 256bit = array with 32 byte
             }
 
             // remove unnecessary bytes
-            var unnecessaryBytes = (-data.length ^ 0x10) & 0x0F; // unnecessaryBytes = (16 - data.length % 16) % 16
+            var unnecessaryBytes = -data.length & 0x0F; // unnecessaryBytes = (16 - data.length % 16) % 16
 
             for (i = 0; i < unnecessaryBytes; i++) {
                 buffer.pop();
