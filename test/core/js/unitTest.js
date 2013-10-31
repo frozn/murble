@@ -111,7 +111,7 @@ $(document).ready(function () {
                 })
             }));
         });
-    }
+    };
 
     testAes256Decrypt([{
             key: 'c47b0294dbbbee0fec4757f22ffeee3587ca4730c3d33b691df38bab076bc558',
@@ -177,5 +177,102 @@ $(document).ready(function () {
             key: 'fca02f3d5011cfc5c1e23165d413a049d4526a991827424d896fe3435e0bf68e',
             cipherText: '179a49c712154bbffbe6e7a84a18e220',
             plainTextSpecification: '00000000000000000000000000000000'
+    }]);
+
+    // gcm encrypt test vectors
+    // from: http://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/gcm/gcm-revised-spec.pdf
+    // only test case 17 and 18 used (key length = 256bit and iv length != 96bit)
+    var testGcmEncrypt = function (testVectors) {
+        m.array.each(testVectors, function (testVector) {
+            var key = m.util.hex.stringToByteArray(testVector.key),
+                iv = m.util.hex.stringToByteArray(testVector.iv),
+                plainText = m.util.hex.stringToByteArray(testVector.plainText),
+                authenticationData = m.util.hex.stringToByteArray(testVector.authenticationData),
+                gcm = new m.cipher.mode.gcm(key, iv),
+                cipherText = gcm.encrypt(plainText, authenticationData),
+                cipherTextSpecification = m.util.hex.stringToByteArray(testVector.cipherTextSpecification),
+                authenticationTagSpecification = m.util.hex.stringToByteArray(testVector.authenticationTagSpecification);
+
+            $('body').append($('<div>', {
+                class: 'pre',
+                html: m.string.format('gcm encrypt test vectors: [<span class="{result}">{result}</span>], input: [key: {key}, iv: {iv}, plain text: {plainText}], expected: [cipher text: {cipherTextSpecification}, authentication tag: {authenticationTagSpecification}], returned: [cipher text: {cipherText}, authentication tag: {authenticationTag}]', {
+                    result: m.array.equals(cipherText.cipherText, cipherTextSpecification) && m.array.equals(cipherText.authenticationTag, authenticationTagSpecification) ? 'ok' : 'error',
+                    key: m.util.hex.byteArrayToString(key),
+                    iv: m.util.hex.byteArrayToString(iv),
+                    plainText: m.util.hex.byteArrayToString(plainText),
+                    authenticationData: m.util.hex.byteArrayToString(authenticationData),
+                    cipherTextSpecification: m.util.hex.byteArrayToString(cipherTextSpecification),
+                    authenticationTagSpecification: m.util.hex.byteArrayToString(authenticationTagSpecification),
+                    cipherText: m.util.hex.byteArrayToString(cipherText.cipherText),
+                    authenticationTag: m.util.hex.byteArrayToString(cipherText.authenticationTag)
+                })
+            }));
+        });
+    };
+
+    testGcmEncrypt([{
+        key: 'feffe9928665731c6d6a8f9467308308feffe9928665731c6d6a8f9467308308',
+        iv: 'cafebabefacedbad',
+        plainText: 'd9313225f88406e5a55909c5aff5269a86a7a9531534f7da2e4c303d8a318a721c3c0c95956809532fcf0e2449a6b525b16aedf5aa0de657ba637b39',
+        authenticationData: 'feedfacedeadbeeffeedfacedeadbeefabaddad2',
+        cipherTextSpecification: 'c3762df1ca787d32ae47c13bf19844cbaf1ae14d0b976afac52ff7d79bba9de0feb582d33934a4f0954cc2363bc73f7862ac430e64abe499f47c9b1f',
+        authenticationTagSpecification: '3a337dbf46a792c45e454913fe2ea8f2'
+    }, {
+        key: 'feffe9928665731c6d6a8f9467308308feffe9928665731c6d6a8f9467308308',
+        iv: '9313225df88406e555909c5aff5269aa6a7a9538534f7da1e4c303d2a318a728c3c0c95156809539fcf0e2429a6b525416aedbf5a0de6a57a637b39b',
+        plainText: 'd9313225f88406e5a55909c5aff5269a86a7a9531534f7da2e4c303d8a318a721c3c0c95956809532fcf0e2449a6b525b16aedf5aa0de657ba637b39',
+        authenticationData: 'feedfacedeadbeeffeedfacedeadbeefabaddad2',
+        cipherTextSpecification: '5a8def2f0c9e53f1f75d7853659e2a20eeb2b22aafde6419a058ab4f6f746bf40fc0c3b780f244452da3ebf1c5d82cdea2418997200ef82e44ae7e3f',
+        authenticationTagSpecification: 'a44a8266ee1c8eb0c8b5d4cf5ae9f19a'
+    }]);
+
+    // gcm decrypt test vectors
+    // from: http://csrc.nist.gov/groups/ST/toolkit/BCM/documents/proposedmodes/gcm/gcm-revised-spec.pdf
+    // only test case 17 and 18 used (key length = 256bit and iv length != 96bit)
+    var testGcmDecrypt = function (testVectors) {
+        m.array.each(testVectors, function (testVector) {
+            var key = m.util.hex.stringToByteArray(testVector.key),
+                iv = m.util.hex.stringToByteArray(testVector.iv),
+                cipherText = m.util.hex.stringToByteArray(testVector.cipherText),
+                authenticationData = m.util.hex.stringToByteArray(testVector.authenticationData),
+                gcm = new m.cipher.mode.gcm(key, iv),
+                plainText = [],
+                plainTextSpecification = m.util.hex.stringToByteArray(testVector.plainTextSpecification),
+                authenticationTagSpecification = m.util.hex.stringToByteArray(testVector.authenticationTagSpecification);
+
+            try {
+                plainText = gcm.decrypt(cipherText, authenticationData, authenticationTagSpecification);
+            } catch (e) {
+            }
+
+            $('body').append($('<div>', {
+                class: 'pre',
+                html: m.string.format('gcm decrypt test vectors: [<span class="{result}">{result}</span>], input: [key: {key}, iv: {iv}, cipher text: {cipherText}], expected: [{plainTextSpecification}], returned: [{plainText}]', {
+                    result: m.array.equals(plainText, plainTextSpecification) ? 'ok' : 'error',
+                    key: m.util.hex.byteArrayToString(key),
+                    iv: m.util.hex.byteArrayToString(iv),
+                    cipherText: m.util.hex.byteArrayToString(cipherText),
+                    authenticationData: m.util.hex.byteArrayToString(authenticationData),
+                    plainTextSpecification: m.util.hex.byteArrayToString(plainTextSpecification),
+                    plainText: m.util.hex.byteArrayToString(plainText)
+                })
+            }));
+        });
+    };
+
+    testGcmDecrypt([{
+        key: 'feffe9928665731c6d6a8f9467308308feffe9928665731c6d6a8f9467308308',
+        iv: 'cafebabefacedbad',
+        cipherText: 'c3762df1ca787d32ae47c13bf19844cbaf1ae14d0b976afac52ff7d79bba9de0feb582d33934a4f0954cc2363bc73f7862ac430e64abe499f47c9b1f',
+        authenticationData: 'feedfacedeadbeeffeedfacedeadbeefabaddad2',
+        plainTextSpecification: 'd9313225f88406e5a55909c5aff5269a86a7a9531534f7da2e4c303d8a318a721c3c0c95956809532fcf0e2449a6b525b16aedf5aa0de657ba637b39',
+        authenticationTagSpecification: '3a337dbf46a792c45e454913fe2ea8f2'
+    }, {
+        key: 'feffe9928665731c6d6a8f9467308308feffe9928665731c6d6a8f9467308308',
+        iv: '9313225df88406e555909c5aff5269aa6a7a9538534f7da1e4c303d2a318a728c3c0c95156809539fcf0e2429a6b525416aedbf5a0de6a57a637b39b',
+        cipherText: '5a8def2f0c9e53f1f75d7853659e2a20eeb2b22aafde6419a058ab4f6f746bf40fc0c3b780f244452da3ebf1c5d82cdea2418997200ef82e44ae7e3f',
+        authenticationData: 'feedfacedeadbeeffeedfacedeadbeefabaddad2',
+        plainTextSpecification: 'd9313225f88406e5a55909c5aff5269a86a7a9531534f7da2e4c303d8a318a721c3c0c95956809532fcf0e2449a6b525b16aedf5aa0de657ba637b39',
+        authenticationTagSpecification: 'a44a8266ee1c8eb0c8b5d4cf5ae9f19a'
     }]);
 });
