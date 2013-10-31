@@ -31,7 +31,6 @@ m.util.hex = {
         }
 
         return arr;
-
     }
 };
 
