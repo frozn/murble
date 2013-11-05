@@ -69,11 +69,10 @@ m.cipher.mode.gcm = function (key, newIv) { // key = 256bit = array with 32 byte
             for (i = 0; i < data.length; i += 16) {
                 incCtr();
 
-                var encryptedCtr = aes256.encrypt(ctr),
-                    dataBlock = data.slice(i, i + 16);
+                var encryptedCtr = aes256.encrypt(ctr);
 
                 for (j = 0; j < 16; j++) {
-                    buffer.push(encryptedCtr[j] ^ dataBlock[j]);
+                    buffer.push(encryptedCtr[j] ^ data[i | j]);
                 }
             }
 
