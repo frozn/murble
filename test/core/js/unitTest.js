@@ -275,4 +275,91 @@ $(document).ready(function () {
         plainTextSpecification: 'd9313225f88406e5a55909c5aff5269a86a7a9531534f7da2e4c303d8a318a721c3c0c95956809532fcf0e2449a6b525b16aedf5aa0de657ba637b39',
         authenticationTagSpecification: 'a44a8266ee1c8eb0c8b5d4cf5ae9f19a'
     }]);
+
+    // base64 encode test vectors
+    // from: http://tools.ietf.org/html/rfc4648#page-12
+    // all base64 test vectors used
+    var testBase64Encode = function (testVectors) {
+        m.array.each(testVectors, function (testVector) {
+            var plainText = m.string.toCharCodeArray(testVector.plainText),
+                encodedText = m.codec.base64.encode(plainText);
+
+            $('body').append($('<div>', {
+                class: 'pre',
+                html: m.string.format('base64 encode test vectors: [<span class="{result}">{result}</span>], input: [{plainText}], expected: [{encodedTextSpecification}], returned: [{encodedText}]', {
+                    result: encodedText == testVector.encodedTextSpecification ? 'ok' : 'error',
+                    plainText: testVector.plainText,
+                    encodedTextSpecification: testVector.encodedTextSpecification,
+                    encodedText: encodedText
+                })
+            }));
+        });
+    };
+
+    testBase64Encode([{
+        plainText: '',
+        encodedTextSpecification: ''
+    }, {
+        plainText: 'f',
+        encodedTextSpecification: 'Zg=='
+    }, {
+        plainText: 'fo',
+        encodedTextSpecification: 'Zm8='
+    }, {
+        plainText: 'foo',
+        encodedTextSpecification: 'Zm9v'
+    }, {
+        plainText: 'foob',
+        encodedTextSpecification: 'Zm9vYg=='
+    }, {
+        plainText: 'fooba',
+        encodedTextSpecification: 'Zm9vYmE='
+    }, {
+        plainText: 'foobar',
+        encodedTextSpecification: 'Zm9vYmFy'
+    }]);
+
+
+    // base64 decode test vectors
+    // from: http://tools.ietf.org/html/rfc4648#page-12
+    // all base64 test vectors used
+    var testBase64Decode = function (testVectors) {
+        m.array.each(testVectors, function (testVector) {
+            var plainText = m.codec.base64.decode(testVector.encodedText),
+                plainTextSpecification = m.string.toCharCodeArray(testVector.plainTextSpecification);
+
+            $('body').append($('<div>', {
+                class: 'pre',
+                html: m.string.format('base64 decode test vectors: [<span class="{result}">{result}</span>], input: [{encodedText}], expected: [{plainTextSpecification}], returned: [{plainText}]', {
+                    result: m.array.equals(plainText, plainTextSpecification) ? 'ok' : 'error',
+                    encodedText: testVector.encodedText,
+                    plainTextSpecification: testVector.plainTextSpecification,
+                    plainText: m.string.fromCharCodeArray(plainText)
+                })
+            }));
+        });
+    };
+
+    testBase64Decode([{
+        encodedText: '',
+        plainTextSpecification: ''
+    }, {
+        encodedText: 'Zg==',
+        plainTextSpecification: 'f'
+    }, {
+        encodedText: 'Zm8=',
+        plainTextSpecification: 'fo'
+    }, {
+        encodedText: 'Zm9v',
+        plainTextSpecification: 'foo'
+    }, {
+        encodedText: 'Zm9vYg==',
+        plainTextSpecification: 'foob'
+    }, {
+        encodedText: 'Zm9vYmE=',
+        plainTextSpecification: 'fooba'
+    }, {
+        encodedText: 'Zm9vYmFy',
+        plainTextSpecification: 'foobar'
+    }]);
 });

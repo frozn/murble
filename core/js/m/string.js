@@ -10,7 +10,10 @@
  * });
  *
  * - toCharCodeArray
- * var charCodeArr = m.string.toCharCodeArray('hello world');
+ * var charCodeArr = m.string.toCharCodeArray(str);
+ *
+ * - fromCharCodeArray
+ * var str = m.string.fromCharCodeArray(charCodeArr);
  */
 m.createNamespace('m.string');
 
@@ -31,5 +34,15 @@ m.string = {
         }
 
         return arr;
+    },
+    fromCharCodeArray: function(arr) {
+        var str = '',
+            i;
+
+        for (i = 0; i < arr.length; i++) {
+            str += String.fromCharCode(arr[i]);
+        }
+
+        return str;
     }
 };
