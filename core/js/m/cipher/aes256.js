@@ -80,10 +80,11 @@ m.cipher.aes256 = (function () {
                 }
             },
             addRoundKey = function (roundNumber) {
-                var i;
+                var rkeyOffset = roundNumber << 4,
+                    i;
 
                 for (i = 0; i < 16; i++) {
-                    block[i] ^= rkey[roundNumber << 4 | i];
+                    block[i] ^= rkey[rkeyOffset | i];
                 }
             },
             subBytes = function () {
@@ -159,10 +160,10 @@ m.cipher.aes256 = (function () {
                 for (i = 0; i < 16; i += 4) {
                     var colValues = block.slice(i, i + 4);
 
-					block[i]     = mathGf8.multiply(colValues[0], 2) ^ mathGf8.multiply(colValues[1], 3) ^ colValues[2]                      ^ colValues[3];
-					block[i + 1] = colValues[0]                      ^ mathGf8.multiply(colValues[1], 2) ^ mathGf8.multiply(colValues[2], 3) ^ colValues[3];
-					block[i + 2] = colValues[0]                      ^ colValues[1]                      ^ mathGf8.multiply(colValues[2], 2) ^ mathGf8.multiply(colValues[3], 3);
-					block[i + 3] = mathGf8.multiply(colValues[0], 3) ^ colValues[1]                      ^ colValues[2]                      ^ mathGf8.multiply(colValues[3], 2);
+                    block[i]     = mathGf8.multiply(colValues[0], 2) ^ mathGf8.multiply(colValues[1], 3) ^ colValues[2]                      ^ colValues[3];
+                    block[i + 1] = colValues[0]                      ^ mathGf8.multiply(colValues[1], 2) ^ mathGf8.multiply(colValues[2], 3) ^ colValues[3];
+                    block[i + 2] = colValues[0]                      ^ colValues[1]                      ^ mathGf8.multiply(colValues[2], 2) ^ mathGf8.multiply(colValues[3], 3);
+                    block[i + 3] = mathGf8.multiply(colValues[0], 3) ^ colValues[1]                      ^ colValues[2]                      ^ mathGf8.multiply(colValues[3], 2);
                 }
             },
             invMixColumns = function () {
@@ -172,10 +173,10 @@ m.cipher.aes256 = (function () {
                 for (i = 0; i < 16; i += 4) {
                     var colValues = block.slice(i, i + 4);
 
-					block[i]     = mathGf8.multiply(colValues[0], 14) ^ mathGf8.multiply(colValues[1], 11) ^ mathGf8.multiply(colValues[2], 13) ^ mathGf8.multiply(colValues[3], 9);
-					block[i + 1] = mathGf8.multiply(colValues[0], 9)  ^ mathGf8.multiply(colValues[1], 14) ^ mathGf8.multiply(colValues[2], 11) ^ mathGf8.multiply(colValues[3], 13);
-					block[i + 2] = mathGf8.multiply(colValues[0], 13) ^ mathGf8.multiply(colValues[1], 9)  ^ mathGf8.multiply(colValues[2], 14) ^ mathGf8.multiply(colValues[3], 11);
-					block[i + 3] = mathGf8.multiply(colValues[0], 11) ^ mathGf8.multiply(colValues[1], 13) ^ mathGf8.multiply(colValues[2], 9)  ^ mathGf8.multiply(colValues[3], 14);
+                    block[i]     = mathGf8.multiply(colValues[0], 14) ^ mathGf8.multiply(colValues[1], 11) ^ mathGf8.multiply(colValues[2], 13) ^ mathGf8.multiply(colValues[3], 9);
+                    block[i + 1] = mathGf8.multiply(colValues[0], 9)  ^ mathGf8.multiply(colValues[1], 14) ^ mathGf8.multiply(colValues[2], 11) ^ mathGf8.multiply(colValues[3], 13);
+                    block[i + 2] = mathGf8.multiply(colValues[0], 13) ^ mathGf8.multiply(colValues[1], 9)  ^ mathGf8.multiply(colValues[2], 14) ^ mathGf8.multiply(colValues[3], 11);
+                    block[i + 3] = mathGf8.multiply(colValues[0], 11) ^ mathGf8.multiply(colValues[1], 13) ^ mathGf8.multiply(colValues[2], 9)  ^ mathGf8.multiply(colValues[3], 14);
                 }
             };
 
